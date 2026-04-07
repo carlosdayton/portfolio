@@ -27,7 +27,7 @@ a, button, .btn, .skill-badge, input, .project-card {
   border-radius: 50%;
   position: fixed;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 1000000;
   mix-blend-mode: screen;
   box-shadow: 0 0 20px #d946ef, 0 0 40px #a855f7;
   transition: transform 0.1s ease-out, width 0.3s, height 0.3s;
