@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Portfolio | Neon Plasma</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+  <!-- Custom Neon Cursor -->
+  <div id="custom-cursor"></div>
+
+  <!-- The animated background -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Top Navigation -->
+  <nav class="glass-nav">
+    <div class="logo">CD.</div>
+    <ul class="nav-links">
+      <li><a href="#hero">Início</a></li>
+      <li><a href="#about">Sobre</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projetos</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Scrollable Content -->
+  <main class="portfolio-container">
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section reveal">
+      <div class="glass-card hero-card">
+        <h1>Olá, sou <span class="gradient-text">Carlos Dayton</span></h1>
+        <h2>Desenvolvedor Web - Full Stack</h2>
+        <p>Construindo aplicações web robustas e escaláveis. Foco em arquitetura lógica, código limpo e alta performance
+          do front ao back-end.</p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn primary-btn">Ver Projetos</a>
+          <a href="#journey" class="btn secondary-btn">Minha Jornada</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="content-section reveal">
+      <h2 class="section-title">Sobre Mim</h2>
+      <div class="glass-card about-card">
+        <p>Sou um desenvolvedor apaixonado por criar experiências ricas, unindo lógicas complexas e visuais de ponta
+          como este próprio site. Com sólido background em Suporte Nível 2 e Infraestrutura, trago uma visão analítica
+          para o desenvolvimento, garantindo soluções resilientes e focadas no usuário.</p>
+        <p>Atualmente, foco em expandir meus conhecimentos no ecossistema Full-Stack, unindo a criatividade do Front-end
+          com a robustez do Back-end.</p>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="content-section reveal">
+      <h2 class="section-title">Minhas Tecnologias</h2>
+      <div class="skills-categories">
+        <div class="skill-category">
+          <h3>Desenvolvimento</h3>
+          <div class="skills-grid">
+            <div class="glass-card skill-badge">HTML, CSS & JavaScript</div>
+            <div class="glass-card skill-badge">TypeScript</div>
+            <div class="glass-card skill-badge">React</div>
+            <div class="glass-card skill-badge">Java (OOP)</div>
+            <div class="glass-card skill-badge">Node.js</div>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3>Infra & Redes</h3>
+          <div class="skills-grid">
+            <div class="glass-card skill-badge">Redes (Protocolos)</div>
+            <div class="glass-card skill-badge">Service Desk</div>
+            <div class="glass-card skill-badge">Cloud Fundam.</div>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3>Segurança</h3>
+          <div class="skills-grid">
+            <div class="glass-card skill-badge">Fundamentos de Cibersegurança</div>
+            <div class="glass-card skill-badge">Segurança Computacional</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Journey Section -->
+    <section id="journey" class="content-section reveal">
+      <h2 class="section-title">Minha Jornada Profissional</h2>
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="glass-card timeline-content">
+            <span class="timeline-date">Out 2025 - Atual</span>
+            <h3>Suporte Nível 2</h3>
+            <span class="company">Positivo S+</span>
+            <p>Diagnóstico e correção de falhas críticas em sistemas operacionais, redes e equipamentos. Presto suporte
+              remoto e presencial, mantendo a continuidade operacional de usuários internos e externos.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="glass-card timeline-content">
+            <span class="timeline-date">Set 2023 - Mar 2024</span>
+            <h3>Estagiário em Desenvolvimento</h3>
+            <span class="company">SLU - Serviço de Limpeza Urbano</span>
+            <p>Apoio no desenvolvimento, manutenção e testes de sistemas e aplicações. Experiência prática com
+              documentação técnica, correção de bugs e melhoria de performance em ambientes reais.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="glass-card timeline-content">
+            <span class="timeline-date">Jan 2023 - Atual</span>
+            <h3>Análise e Desenvolvimento de Sistemas</h3>
+            <span class="company">Estácio de Sá (Graduação)</span>
+            <p>Foco acadêmico em algoritmos escaláveis, programação orientada a objetos (Java) e estrutura de dados.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="glass-card timeline-content">
+            <span class="timeline-date">Dez 2022 - Out 2025</span>
+            <h3>Suporte Nível 2</h3>
+            <span class="company">DSS Serviços e Tecnologia</span>
+            <p>Atendimento especializado em órgãos governamentais (CGU, Ministérios), focando em suporte infraestrutural
+              e resolução de chamados técnicos de alta complexidade.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="content-section reveal">
+      <h2 class="section-title">Meu Portfólio</h2>
+      <div class="projects-grid">
+
+        <div class="glass-card project-card">
+          <img src="/pokemon.png" alt="Buscador Pokémon">
+          <div class="project-info">
+            <h3>Buscador Pokémon 🕹️</h3>
+            <p>Aplicação iterativa integrada à PokéAPI. Retorna imagens, tipagens, e exibe status competitivos (HP, Sp.
+              Atk) em tempo real com visual Dark Mode.</p>
+            <a href="https://carlosdayton.github.io/buscador-pokemon/" target="_blank" class="btn secondary-btn">Acessar
+              Projeto</a>
+          </div>
+        </div>
+
+        <div class="glass-card project-card">
+          <img src="/grocery_app.png" alt="Checklist Market PWA">
+          <div class="project-info">
+            <h3>Checklist Market 🛒</h3>
+            <p>Um PWA super rápido para listas de supermercado. Possui um sistema de arquitetura híbrida com
+              funcionamento Offline-First (Local Storage) e sincronização na nuvem avançada via banco de dados Supabase.
+            </p>
+            <a href="https://checklist-market.vercel.app" target="_blank" class="btn secondary-btn">Acessar Projeto</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="content-section reveal">
+      <h2 class="section-title">Vamos Conversar?</h2>
+      <div class="glass-card contact-container">
+
+        <form action="https://formspree.io/f/xlgozqjk" method="POST" class="contact-form">
+          <div class="input-group">
+            <label for="name">Seu Nome</label>
+            <input type="text" id="name" name="name" placeholder="Como posso te chamar?" required>
+          </div>
+
+          <div class="input-group">
+            <label for="email">Seu E-mail</label>
+            <input type="email" id="email" name="_replyto" placeholder="Onde te respondo?" required>
+          </div>
+
+          <div class="input-group">
+            <label for="message">Sua Mensagem</label>
+            <textarea id="message" name="message" rows="5" placeholder="Em que posso te ajudar?" required></textarea>
+          </div>
+
+          <!-- Hidden field to prevent spam from bots -->
+          <input type="text" name="_gotcha" style="display:none">
+
+          <button type="submit" class="btn primary-btn submit-btn">Enviar Mensagem</button>
+        </form>
+
+        <div class="contact-info">
+          <div class="social-links">
+            <a href="https://github.com/carlosdayton" target="_blank" class="btn glass-btn">GitHub</a>
+            <a href="https://www.linkedin.com/in/carlos-dayton-r/" target="_blank" class="btn glass-btn">LinkedIn</a>
+            <a href="https://www.instagram.com/carlosdayton_/" target="_blank" class="btn glass-btn">Instagram</a>
+          </div>
+          <p class="copyright">© 2026 Carlos Dayton. Criado com Arte Generativa.</p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Project Details Modal -->
+  <div id="project-modal" class="modal-overlay">
+    <div class="glass-card modal-content">
+      <button id="close-modal" class="close-btn">&times;</button>
+      <div class="modal-body">
+        <div class="modal-image-container">
+          <img id="modal-img" src="" alt="Project Preview">
+        </div>
+        <div class="modal-info">
+          <h2 id="modal-title" class="gradient-text">Título do Projeto</h2>
+          <div id="modal-tags" class="tags-container">
+            <!-- Tags will be injected here -->
+          </div>
+          <p id="modal-description">Descrição detalhada do projeto será inserida aqui via JavaScript.</p>
+          <div class="modal-actions">
+            <a id="modal-link-live" href="#" target="_blank" class="btn primary-btn">Acessar Projeto</a>
+            <a id="modal-link-github" href="#" target="_blank" class="btn secondary-btn">Ver no GitHub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
