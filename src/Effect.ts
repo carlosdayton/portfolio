@@ -15,16 +15,15 @@ export class Effect {
     this.width = this.canvas.width;
     this.height = this.canvas.height;
     this.particles = [];
-    this.numberOfParticles = Math.floor((this.width * this.height) / 8000); // Standard density for constellations
+    this.numberOfParticles = Math.floor((this.width * this.height) / 14000); // Optimized density
     this.mouse = {
       x: -1000,
       y: -1000,
       pressed: false,
-      radius: 180, // Influence radius
+      radius: 180, 
     };
-    // Hardcoded optimal fluid simulation parameters
     this.viscosity = 0.92;
-    this.glowSize = 2; // Reduced for stars
+    this.glowSize = 2;
 
     window.addEventListener('resize', () => {
       this.resize(window.innerWidth, window.innerHeight);
@@ -76,8 +75,8 @@ export class Effect {
     this.canvas.height = height;
     this.width = width;
     this.height = height;
-    this.numberOfParticles = Math.floor((this.width * this.height) / 8000);
-    this.init(); // Regerate particles to fill new space smoothly
+    this.numberOfParticles = Math.floor((this.width * this.height) / 14000);
+    this.init(); 
   }
 
   handleParticles(context: CanvasRenderingContext2D) {
@@ -90,23 +89,22 @@ export class Effect {
 
   connectParticles(context: CanvasRenderingContext2D) {
     const maxDistance = 90;
+    const maxDistanceSq = maxDistance * maxDistance;
+    context.lineWidth = 1;
+    
     for (let a = 0; a < this.particles.length; a++) {
-      for (let b = a; b < this.particles.length; b++) {
+      for (let b = a + 1; b < this.particles.length; b++) {
         const dx = this.particles[a].x - this.particles[b].x;
         const dy = this.particles[a].y - this.particles[b].y;
-        const distance = Math.hypot(dx, dy);
+        const distSq = dx * dx + dy * dy;
 
-        if (distance < maxDistance) {
-          context.save();
-          // Using purple #a855f7 theme -> rgb(168, 85, 247)
-          const opacity = 1 - distance / maxDistance;
-          context.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.4})`;
-          context.lineWidth = 1;
+        if (distSq < maxDistanceSq) {
+          const opacity = 1 - Math.sqrt(distSq) / maxDistance;
+          context.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.3})`;
           context.beginPath();
           context.moveTo(this.particles[a].x, this.particles[a].y);
           context.lineTo(this.particles[b].x, this.particles[b].y);
           context.stroke();
-          context.restore();
         }
       }
     }

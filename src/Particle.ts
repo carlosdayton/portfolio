@@ -39,21 +39,19 @@ export class Particle {
     context.beginPath();
     context.arc(this.x, this.y, currentRadius, 0, Math.PI * 2);
     
-    // Radial gradient for plasma glow effect
-    const gradient = context.createRadialGradient(this.x, this.y, currentRadius * 0.1, this.x, this.y, currentRadius);
-    gradient.addColorStop(0, `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, 1)`);
-    gradient.addColorStop(1, `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, 0)`);
-    
-    context.fillStyle = gradient;
+    // Optimized: Using solid color instead of creating a gradient every frame
+    context.fillStyle = `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, 0.8)`;
     context.fill();
   }
 
   update() {
     const dx = this.x - this.effect.mouse.x;
     const dy = this.y - this.effect.mouse.y;
-    const distance = Math.hypot(dx, dy);
+    const distSq = dx * dx + dy * dy;
+    const mouseRadiusSq = this.effect.mouse.radius * this.effect.mouse.radius;
 
-    if (distance < this.effect.mouse.radius) {
+    if (distSq < mouseRadiusSq) {
+      const distance = Math.sqrt(distSq);
       const force = this.effect.mouse.radius / distance;
       const angle = Math.atan2(dy, dx);
       

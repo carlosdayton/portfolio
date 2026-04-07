@@ -81,10 +81,12 @@ canvas {
 /* Glassmorphism System */
 .glass-nav, .glass-card, .glass-footer, .glass-btn {
   background: rgba(18, 20, 26, 0.45);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(12px); /* Swapped 16px for 12px for better performance on mobile */
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 /* Typography Utilities */
@@ -436,8 +438,14 @@ canvas {
 }
 
 @media (max-width: 768px) {
-  .hero-card h1 { font-size: 2.5rem; }
-  .nav-links { display: none; } /* Hide on mobile for simplicity */
+  .hero-card h1 { font-size: 2.2rem; }
+  .hero-card { padding: 40px 20px; }
+  .nav-links { display: none; }
+  .content-section { padding: 40px 15px; }
+  .contact-container { padding: 30px 15px; width: 100%; border-radius: 16px; gap: 30px; }
+  .social-links { flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .social-links .btn { padding: 10px 15px; font-size: 0.85rem; flex: 1; min-width: 100px; text-align: center; }
+  .modal-content { padding: 25px 20px; }
 }
 
 /* Modal Overlay */

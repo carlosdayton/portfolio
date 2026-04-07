@@ -136,23 +136,30 @@ if (ctx) {
   // --- Tilt Effect for Project Cards ---
   function initTiltEffect() {
     const cards = document.querySelectorAll('.project-card');
+    let rafId: number | null = null;
+
     cards.forEach(card => {
       card.addEventListener('mousemove', (e) => {
-        const mouseEvent = e as MouseEvent;
-        const rect = card.getBoundingClientRect();
-        const x = mouseEvent.clientX - rect.left;
-        const y = mouseEvent.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = ((y - centerY) / centerY) * 10; // Max 10 deg
-        const rotateY = ((centerX - x) / centerX) * 10; // Max 10 deg
-        
-        (card as HTMLElement).style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          const mouseEvent = e as MouseEvent;
+          const rect = card.getBoundingClientRect();
+          const x = mouseEvent.clientX - rect.left;
+          const y = mouseEvent.clientY - rect.top;
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const rotateX = ((y - centerY) / centerY) * 10;
+          const rotateY = ((centerX - x) / centerX) * 10;
+          
+          (card as HTMLElement).style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+          rafId = null;
+        });
       });
       
       card.addEventListener('mouseleave', () => {
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
         (card as HTMLElement).style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
       });
     });
