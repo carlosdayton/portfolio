@@ -1,5 +1,8 @@
 import './style.css'
 import { Effect } from './Effect';
+import { inject } from '@vercel/analytics';
+
+inject();
 
 const canvas = document.getElementById('particleCanvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d');
