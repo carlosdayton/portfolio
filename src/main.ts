@@ -48,6 +48,14 @@ if (ctx) {
       description: 'O Checklist Market é um organizador de compras inteligente. Utiliza uma arquitetura híbrida onde os dados são salvos localmente (Local Storage) para funcionamento offline instantâneo e sincronizados com o Supabase quando houver conexão. Inclui funcionalidades de categorias customizadas, soma automática de valores e instalação como aplicativo direto na tela do celular (PWA).',
       live: 'https://checklist-market.vercel.app',
       github: 'https://github.com/carlosdayton' // Placeholder or real
+    },
+    'visionai': {
+      title: 'VisionAI Dashboard 🤖',
+      image: '/vision_ai.png',
+      tags: ['Python', 'YOLOv8', 'Streamlit', 'OpenCV'],
+      description: 'Dashboard de Visão Computacional de alta performance que implementa o algoritmo YOLOv8 (You Only Look Once) para detecção simultânea de múltiplos objetos. O projeto foca na integração de modelos de Deep Learning em interfaces web, utilizando inferência em tempo real via Python para reconhecer e categorizar mais de 80 tipos de itens com precisão dinâmica.',
+      live: '#',
+      github: 'https://github.com/carlosdayton'
     }
   };
 
@@ -92,13 +100,14 @@ if (ctx) {
 
   // Hook up project card clicks
   const projectCards = document.querySelectorAll('.project-card');
-  projectCards.forEach((card, index) => {
+  projectCards.forEach((card) => {
     card.addEventListener('click', (e) => {
-      // Prevent opening modal if "Acessar Projeto" button was clicked
-      if ((e.target as HTMLElement).classList.contains('btn')) return;
+      const target = e.target as HTMLElement;
+      // Allow secondary-btn (external links) to work normally
+      if (target.classList.contains('secondary-btn')) return;
       
-      const projectId = index === 0 ? 'pokemon' : 'market';
-      openProjectModal(projectId);
+      const projectId = card.getAttribute('data-project');
+      if (projectId) openProjectModal(projectId);
     });
   });
 
