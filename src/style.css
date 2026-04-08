@@ -638,3 +638,12 @@ canvas {
 .toast-error { border-color: #f43f5e; box-shadow: 0 0 20px rgba(244, 63, 94, 0.15); }
 .toast-info { border-color: #00f2fe; box-shadow: 0 0 20px rgba(0, 242, 254, 0.15); }
 
+/* Hide custom cursor on touch devices to avoid "stuck" cursor bug */
+@media (hover: none) and (pointer: coarse) {
+  #custom-cursor {
+    display: none !important;
+  }
+  body, a, button, .btn, .skill-badge, input, .project-card {
+    cursor: auto !important;
+  }
+}
