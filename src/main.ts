@@ -56,6 +56,14 @@ if (ctx) {
       description: 'Dashboard de Visão Computacional de alta performance que implementa o algoritmo YOLOv8 (You Only Look Once) para detecção simultânea de múltiplos objetos. O projeto foca na integração de modelos de Deep Learning em interfaces web, utilizando inferência em tempo real via Python para reconhecer e categorizar mais de 80 tipos de itens com precisão dinâmica.',
       live: '#',
       github: 'https://github.com/carlosdayton'
+    },
+    'limpador': {
+      title: 'Limpador Pro 🧹',
+      image: '/cleaner.png',
+      tags: ['Electron', 'Python', 'React', 'Vite'],
+      description: 'Ferramenta avançada de limpeza e otimização de sistema para Windows. Utiliza um backend Python robusto para identificar e remover arquivos temporários, logs e lixo de sistema, integrados em uma interface desktop fluida construída com Electron e React.',
+      live: 'https://github.com/carlosdayton/limpador-arquivos-temporarios',
+      github: 'https://github.com/carlosdayton/limpador-arquivos-temporarios'
     }
   };
 
