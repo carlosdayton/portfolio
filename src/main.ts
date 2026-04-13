@@ -67,6 +67,14 @@ if (ctx) {
       description: 'Ferramenta avançada de limpeza e otimização de sistema para Windows. Utiliza um backend Python robusto para identificar e remover arquivos temporários, logs e lixo de sistema, integrados em uma interface desktop fluida construída com Electron e React.',
       live: 'https://github.com/carlosdayton/limpador-arquivos-temporarios',
       github: 'https://github.com/carlosdayton/limpador-arquivos-temporarios'
+    },
+    'cursinho': {
+      title: 'Foco ENEM 🎓',
+      image: '/foco_enem_banner.png',
+      tags: ['React 19', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Vite'],
+      description: 'Sistema de estudos inteligente para o ENEM com revisão espaçada adaptativa, cronograma semanal automático por prioridade, timer Pomodoro integrado, rastreador de simulados com gráfico de evolução e contagem regressiva em tempo real. Todos os dados ficam salvos localmente — sem cadastro, sem servidor.',
+      live: 'https://estudos-cursinho.vercel.app',
+      github: 'https://github.com/carlosdayton/estudos-cursinho'
     }
   };
 
