@@ -39,8 +39,8 @@ if (ctx) {
     'pokemon': {
       title: 'Buscador Pokémon 🕹️',
       image: '/pokemon.png',
-      tags: ['TypeScript', 'PokéAPI', 'Canvas API', 'REST'],
-      description: 'Uma aplicação robusta que consome a PokéAPI para fornecer dados em tempo real sobre qualquer um dos 1000+ Pokémon. Implementei um sistema de busca inteligente, filtragem por tipos e uma visualização detalhada de "base stats" (HP, Ataque, Defesa) com barras de progresso dinâmicas e design focado em acessibilidade e performance mobile.',
+      tags: ['TypeScript', 'Python', 'FastAPI', 'Redis', 'PokéAPI', 'Docker', 'Railway'],
+      description: 'Pokédex completa com interface Neobrutalism, dark mode, shiny toggle, favoritos e radar chart SVG dos stats. Consome a PokéAPI via um BFF (Backend For Frontend) próprio em FastAPI com cache Redis — cada Pokémon é buscado uma vez e servido do cache nas próximas requisições, eliminando rate limits. Front-end deployado no GitHub Pages via GitHub Actions; back-end no Railway com Docker.',
       live: 'https://carlosdayton.github.io/buscador-pokemon/',
       github: 'https://github.com/carlosdayton/buscador-pokemon'
     },
