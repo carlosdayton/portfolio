@@ -27,6 +27,15 @@ if (ctx) {
     effect.init();
   }
 
+  // --- Scroll Progress Bar ---
+  const scrollProgress = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    if (scrollProgress) scrollProgress.style.width = `${progress}%`;
+  });
+
   // --- Scroll Reveal Logic ---
   const reveals = document.querySelectorAll('.reveal');
   const revealObserver = new IntersectionObserver((entries) => {
