@@ -81,7 +81,6 @@ export class Effect {
 
   handleParticles(context: CanvasRenderingContext2D) {
     // Skip connections completely for better performance
-    // this.connectParticles(context);
     
     this.particles.forEach((particle) => {
       particle.draw(context);
@@ -89,7 +88,7 @@ export class Effect {
     });
   }
 
-  connectParticles(context: CanvasRenderingContext2D) {
+  connectParticles() {
     // Disabled for performance - can be re-enabled if needed
     return;
   }
