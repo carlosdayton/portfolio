@@ -204,27 +204,17 @@ if (ctx) {
   }
   updateHoverables();
 
-  let lastFrameTime = 0;
-  const targetFPS = 60;
-  const frameInterval = 1000 / targetFPS;
-  let frameCount = 0;
-
-  function animate(currentTime: number = 0) {
-    const deltaTime = currentTime - lastFrameTime;
+  function animate() {
+    // Reset to default for background clearing
+    ctx!.globalCompositeOperation = 'source-over';
     
-    if (deltaTime >= frameInterval) {
-      lastFrameTime = currentTime - (deltaTime % frameInterval);
-      frameCount++;
-      
-      // Clear canvas with trail effect
-      ctx!.fillStyle = 'rgba(11, 12, 16, 0.4)';
-      ctx!.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw particles (skip every other frame for better performance)
-      if (frameCount % 2 === 0) {
-        effect.handleParticles(ctx!);
-      }
-    }
+    // Semi-transparent background for a subtle trail effect
+    ctx!.fillStyle = 'rgba(11, 12, 16, 0.3)';
+    ctx!.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Set to screen so overlapping gradients combine into bright light
+    ctx!.globalCompositeOperation = 'screen';
+    effect.handleParticles(ctx!);
     
     requestAnimationFrame(animate);
   }

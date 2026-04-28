@@ -15,15 +15,15 @@ export class Effect {
     this.width = this.canvas.width;
     this.height = this.canvas.height;
     this.particles = [];
-    this.numberOfParticles = Math.floor((this.width * this.height) / 30000); // Reduced significantly
+    this.numberOfParticles = Math.floor((this.width * this.height) / 14000); // Back to original
     this.mouse = {
       x: -1000,
       y: -1000,
       pressed: false,
-      radius: 150, // Reduced radius
+      radius: 180, 
     };
-    this.viscosity = 0.95; // Increased for less movement
-    this.glowSize = 1.5; // Reduced glow
+    this.viscosity = 0.92;
+    this.glowSize = 2;
 
     window.addEventListener('resize', () => {
       this.resize(window.innerWidth, window.innerHeight);
@@ -75,21 +75,49 @@ export class Effect {
     this.canvas.height = height;
     this.width = width;
     this.height = height;
-    this.numberOfParticles = Math.floor((this.width * this.height) / 30000);
+    this.numberOfParticles = Math.floor((this.width * this.height) / 14000);
     this.init(); 
   }
 
   handleParticles(context: CanvasRenderingContext2D) {
-    // Skip connections completely for better performance
-    
+    this.connectParticles(context);
     this.particles.forEach((particle) => {
       particle.draw(context);
       particle.update();
     });
   }
 
-  connectParticles() {
-    // Disabled for performance - can be re-enabled if needed
-    return;
+  connectParticles(context: CanvasRenderingContext2D) {
+    const maxDistance = 90;
+    const maxDistanceSq = maxDistance * maxDistance;
+    context.lineWidth = 1;
+    
+    // Optimized: only check nearby particles using spatial partitioning concept
+    for (let a = 0; a < this.particles.length; a++) {
+      let connections = 0;
+      const maxConnectionsPerParticle = 3; // Limit connections per particle
+      
+      for (let b = a + 1; b < this.particles.length; b++) {
+        if (connections >= maxConnectionsPerParticle) break;
+        
+        const dx = this.particles[a].x - this.particles[b].x;
+        const dy = this.particles[a].y - this.particles[b].y;
+        
+        // Early exit if too far on single axis
+        if (Math.abs(dx) > maxDistance || Math.abs(dy) > maxDistance) continue;
+        
+        const distSq = dx * dx + dy * dy;
+
+        if (distSq < maxDistanceSq) {
+          const opacity = 1 - Math.sqrt(distSq) / maxDistance;
+          context.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.3})`;
+          context.beginPath();
+          context.moveTo(this.particles[a].x, this.particles[a].y);
+          context.lineTo(this.particles[b].x, this.particles[b].y);
+          context.stroke();
+          connections++;
+        }
+      }
+    }
   }
 }
