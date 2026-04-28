@@ -15,15 +15,15 @@ export class Effect {
     this.width = this.canvas.width;
     this.height = this.canvas.height;
     this.particles = [];
-    this.numberOfParticles = Math.floor((this.width * this.height) / 20000); // Reduced from 14000 to 20000
+    this.numberOfParticles = Math.floor((this.width * this.height) / 30000); // Reduced significantly
     this.mouse = {
       x: -1000,
       y: -1000,
       pressed: false,
-      radius: 180, 
+      radius: 150, // Reduced radius
     };
-    this.viscosity = 0.92;
-    this.glowSize = 2;
+    this.viscosity = 0.95; // Increased for less movement
+    this.glowSize = 1.5; // Reduced glow
 
     window.addEventListener('resize', () => {
       this.resize(window.innerWidth, window.innerHeight);
@@ -75,15 +75,13 @@ export class Effect {
     this.canvas.height = height;
     this.width = width;
     this.height = height;
-    this.numberOfParticles = Math.floor((this.width * this.height) / 20000);
+    this.numberOfParticles = Math.floor((this.width * this.height) / 30000);
     this.init(); 
   }
 
   handleParticles(context: CanvasRenderingContext2D) {
-    // Only connect particles every other frame for better performance
-    if (Math.random() > 0.5) {
-      this.connectParticles(context);
-    }
+    // Skip connections completely for better performance
+    // this.connectParticles(context);
     
     this.particles.forEach((particle) => {
       particle.draw(context);
@@ -92,28 +90,7 @@ export class Effect {
   }
 
   connectParticles(context: CanvasRenderingContext2D) {
-    const maxDistance = 90;
-    const maxDistanceSq = maxDistance * maxDistance;
-    context.lineWidth = 1;
-    
-    // Limit connections to reduce O(n²) impact
-    const maxConnections = Math.min(this.particles.length, 50);
-    
-    for (let a = 0; a < maxConnections; a++) {
-      for (let b = a + 1; b < maxConnections; b++) {
-        const dx = this.particles[a].x - this.particles[b].x;
-        const dy = this.particles[a].y - this.particles[b].y;
-        const distSq = dx * dx + dy * dy;
-
-        if (distSq < maxDistanceSq) {
-          const opacity = 1 - Math.sqrt(distSq) / maxDistance;
-          context.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.3})`;
-          context.beginPath();
-          context.moveTo(this.particles[a].x, this.particles[a].y);
-          context.lineTo(this.particles[b].x, this.particles[b].y);
-          context.stroke();
-        }
-      }
-    }
+    // Disabled for performance - can be re-enabled if needed
+    return;
   }
 }

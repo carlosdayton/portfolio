@@ -17,12 +17,12 @@ export class Particle {
 
   constructor(effect: Effect) {
     this.effect = effect;
-    this.baseRadius = Math.random() * 2 + 0.5;
+    this.baseRadius = Math.random() * 1.5 + 0.5; // Smaller particles
     this.radius = this.baseRadius;
     this.x = Math.random() * this.effect.width;
     this.y = Math.random() * this.effect.height;
-    this.vx = Math.random() * 1 - 0.5;
-    this.vy = Math.random() * 1 - 0.5;
+    this.vx = Math.random() * 0.5 - 0.25; // Slower movement
+    this.vy = Math.random() * 0.5 - 0.25;
     this.pushX = 0;
     this.pushY = 0;
 
@@ -36,12 +36,9 @@ export class Particle {
     const currentRadius = this.baseRadius * this.effect.glowSize;
     if (currentRadius <= 0) return;
 
-    context.beginPath();
-    context.arc(this.x, this.y, currentRadius, 0, Math.PI * 2);
-    
-    // Optimized: Using solid color instead of creating a gradient every frame
-    context.fillStyle = `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, 0.8)`;
-    context.fill();
+    // Simplified drawing - no gradients, just solid color
+    context.fillStyle = `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, 0.6)`;
+    context.fillRect(this.x - currentRadius, this.y - currentRadius, currentRadius * 2, currentRadius * 2);
   }
 
   update() {
@@ -50,26 +47,14 @@ export class Particle {
     const distSq = dx * dx + dy * dy;
     const mouseRadiusSq = this.effect.mouse.radius * this.effect.mouse.radius;
 
-    if (distSq < mouseRadiusSq) {
+    // Simplified physics - only push away from mouse
+    if (distSq < mouseRadiusSq && distSq > 0) {
       const distance = Math.sqrt(distSq);
-      const force = this.effect.mouse.radius / distance;
+      const force = (this.effect.mouse.radius - distance) / this.effect.mouse.radius;
       const angle = Math.atan2(dy, dx);
       
-      // Vortex fluid effect: pushes outwards while rotating tangentially
-      let pushX = Math.cos(angle) * force;
-      let pushY = Math.sin(angle) * force;
-      
-      // Add strong tangential rotation if pressed (creates stronger swirls)
-      if (this.effect.mouse.pressed) {
-         pushX += Math.cos(angle + Math.PI/2) * force * 2;
-         pushY += Math.sin(angle + Math.PI/2) * force * 2;
-      } else {
-         pushX += Math.cos(angle + Math.PI/2) * force * 0.5;
-         pushY += Math.sin(angle + Math.PI/2) * force * 0.5;
-      }
-      
-      this.pushX += pushX * 0.1;
-      this.pushY += pushY * 0.1;
+      this.pushX += Math.cos(angle) * force * 0.5;
+      this.pushY += Math.sin(angle) * force * 0.5;
     }
 
     // Apply viscosity as friction

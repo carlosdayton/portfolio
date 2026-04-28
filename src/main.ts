@@ -7,11 +7,25 @@ inject();
 const canvas = document.getElementById('particleCanvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d');
 
+// Performance detection
+const isLowPerformance = () => {
+  // Detect mobile or low-end devices
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const isLowMemory = (navigator as any).deviceMemory && (navigator as any).deviceMemory < 4;
+  return isMobile || isLowMemory;
+};
+
 if (ctx) {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
   const effect = new Effect(canvas);
+  
+  // Reduce particles on low-end devices
+  if (isLowPerformance()) {
+    effect.numberOfParticles = Math.floor(effect.numberOfParticles * 0.3);
+    effect.init();
+  }
 
   // --- Scroll Reveal Logic ---
   const reveals = document.querySelectorAll('.reveal');
@@ -193,23 +207,23 @@ if (ctx) {
   let lastFrameTime = 0;
   const targetFPS = 60;
   const frameInterval = 1000 / targetFPS;
+  let frameCount = 0;
 
   function animate(currentTime: number = 0) {
     const deltaTime = currentTime - lastFrameTime;
     
     if (deltaTime >= frameInterval) {
       lastFrameTime = currentTime - (deltaTime % frameInterval);
+      frameCount++;
       
-      // Reset to default for background clearing
-      ctx!.globalCompositeOperation = 'source-over';
-      
-      // Semi-transparent background for a subtle trail effect
-      ctx!.fillStyle = 'rgba(11, 12, 16, 0.3)'; // lower opacity for longer trails
+      // Clear canvas with trail effect
+      ctx!.fillStyle = 'rgba(11, 12, 16, 0.4)';
       ctx!.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Set to screen so overlapping gradients combine into bright light
-      ctx!.globalCompositeOperation = 'screen';
-      effect.handleParticles(ctx!);
+      // Draw particles (skip every other frame for better performance)
+      if (frameCount % 2 === 0) {
+        effect.handleParticles(ctx!);
+      }
     }
     
     requestAnimationFrame(animate);
