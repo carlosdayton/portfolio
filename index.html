@@ -58,6 +58,21 @@
     <!-- Skills Section -->
     <section id="skills" class="content-section reveal">
       <h2 class="section-title">Minhas Tecnologias</h2>
+      
+      <!-- GitHub Stats Card -->
+      <div class="glass-card github-stats-card">
+        <h3 class="stats-title">
+          <span class="gradient-text">GitHub Stats</span>
+          <span class="live-indicator">🔴 Live</span>
+        </h3>
+        <div id="github-stats" class="github-stats-grid">
+          <div class="stat-skeleton"></div>
+          <div class="stat-skeleton"></div>
+          <div class="stat-skeleton"></div>
+          <div class="stat-skeleton"></div>
+        </div>
+      </div>
+
       <div class="skills-categories">
         <div class="skill-category">
           <h3>Desenvolvimento</h3>
@@ -145,6 +160,16 @@
     <!-- Projects Section -->
     <section id="projects" class="content-section reveal">
       <h2 class="section-title">Meu Portfólio</h2>
+      
+      <!-- Filter Buttons -->
+      <div class="filter-container">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="react">React</button>
+        <button class="filter-btn" data-filter="typescript">TypeScript</button>
+        <button class="filter-btn" data-filter="python">Python</button>
+        <button class="filter-btn" data-filter="electron">Electron</button>
+      </div>
+
       <div class="projects-grid">
 
         <div class="glass-card project-card" data-project="pokemon">

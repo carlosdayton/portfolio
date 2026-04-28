@@ -34,6 +34,36 @@ if (ctx) {
     }
   });
 
+  // --- Project Filter Logic ---
+  function filterProjects(tech: string) {
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    projectCards.forEach((card) => {
+      const projectId = card.getAttribute('data-project');
+      const data = PROJECT_DATA[projectId as keyof typeof PROJECT_DATA];
+      
+      if (!data) return;
+      
+      if (tech === 'all' || data.tags.some(tag => tag.toLowerCase().includes(tech.toLowerCase()))) {
+        (card as HTMLElement).style.display = 'flex';
+        setTimeout(() => {
+          card.classList.add('filter-visible');
+        }, 10);
+      } else {
+        card.classList.remove('filter-visible');
+        setTimeout(() => {
+          (card as HTMLElement).style.display = 'none';
+        }, 300);
+      }
+    });
+    
+    // Update active filter button
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    document.querySelector(`[data-filter="${tech}"]`)?.classList.add('active');
+  }
+
   // --- Project Modal Data & Logic ---
   const PROJECT_DATA = {
     'pokemon': {
@@ -135,10 +165,24 @@ if (ctx) {
     if (e.target === modal) closeProjectModal();
   });
 
+  // Hook up filter buttons
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.getAttribute('data-filter');
+      if (filter) filterProjects(filter);
+    });
+  });
+
+  // Initialize all projects as visible
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.classList.add('filter-visible');
+  });
+
   // --- Hover effects for custom cursor ---
   // Re-run this after modal injection if needed, but for now we'll use a delegation or broad selector
   function updateHoverables() {
-    const hoverables = document.querySelectorAll('a, button, .btn, .skill-badge, .project-card, input, textarea, .close-btn');
+    const hoverables = document.querySelectorAll('a, button, .btn, .skill-badge, .project-card, input, textarea, .close-btn, .filter-btn');
     hoverables.forEach(item => {
       item.addEventListener('mouseenter', () => cursor?.classList.add('hover'));
       item.addEventListener('mouseleave', () => cursor?.classList.remove('hover'));
@@ -146,17 +190,27 @@ if (ctx) {
   }
   updateHoverables();
 
-  function animate() {
-    // Reset to default for background clearing
-    ctx!.globalCompositeOperation = 'source-over';
+  let lastFrameTime = 0;
+  const targetFPS = 60;
+  const frameInterval = 1000 / targetFPS;
+
+  function animate(currentTime: number = 0) {
+    const deltaTime = currentTime - lastFrameTime;
     
-    // Semi-transparent background for a subtle trail effect
-    ctx!.fillStyle = 'rgba(11, 12, 16, 0.3)'; // lower opacity for longer trails
-    ctx!.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // Set to screen so overlapping gradients combine into bright light
-    ctx!.globalCompositeOperation = 'screen';
-    effect.handleParticles(ctx!);
+    if (deltaTime >= frameInterval) {
+      lastFrameTime = currentTime - (deltaTime % frameInterval);
+      
+      // Reset to default for background clearing
+      ctx!.globalCompositeOperation = 'source-over';
+      
+      // Semi-transparent background for a subtle trail effect
+      ctx!.fillStyle = 'rgba(11, 12, 16, 0.3)'; // lower opacity for longer trails
+      ctx!.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Set to screen so overlapping gradients combine into bright light
+      ctx!.globalCompositeOperation = 'screen';
+      effect.handleParticles(ctx!);
+    }
     
     requestAnimationFrame(animate);
   }
@@ -248,6 +302,73 @@ if (ctx) {
   }
 
   initTiltEffect();
+
+  // --- GitHub Stats ---
+  async function loadGitHubStats() {
+    const username = 'carlosdayton';
+    const statsContainer = document.getElementById('github-stats');
+    
+    if (!statsContainer) return;
+    
+    try {
+      // Fetch user data
+      const userResponse = await fetch(`https://api.github.com/users/${username}`);
+      const userData = await userResponse.json();
+      
+      // Fetch repos
+      const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
+      const repos = await reposResponse.json();
+      
+      // Calculate stats
+      const totalStars = repos.reduce((acc: number, repo: any) => acc + repo.stargazers_count, 0);
+      const totalForks = repos.reduce((acc: number, repo: any) => acc + repo.forks_count, 0);
+      const publicRepos = userData.public_repos;
+      
+      // Get top languages
+      const languages: { [key: string]: number } = {};
+      repos.forEach((repo: any) => {
+        if (repo.language) {
+          languages[repo.language] = (languages[repo.language] || 0) + 1;
+        }
+      });
+      
+      const topLanguages = Object.entries(languages)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([lang]) => lang);
+      
+      // Update DOM
+      statsContainer.innerHTML = `
+        <div class="stat-item">
+          <div class="stat-icon">📦</div>
+          <div class="stat-value">${publicRepos}</div>
+          <div class="stat-label">Repositórios</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-value">${totalStars}</div>
+          <div class="stat-label">Stars</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">🔱</div>
+          <div class="stat-value">${totalForks}</div>
+          <div class="stat-label">Forks</div>
+        </div>
+        <div class="stat-item languages">
+          <div class="stat-icon">💻</div>
+          <div class="stat-label">Top Linguagens</div>
+          <div class="languages-list">${topLanguages.join(' • ')}</div>
+        </div>
+      `;
+      
+      statsContainer.classList.add('loaded');
+    } catch (error) {
+      console.error('Erro ao carregar stats do GitHub:', error);
+      statsContainer.innerHTML = '<p style="color: #a0a5b5; text-align: center;">Erro ao carregar estatísticas</p>';
+    }
+  }
+  
+  loadGitHubStats();
 
   animate();
 }

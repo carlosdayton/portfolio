@@ -63,6 +63,8 @@ canvas {
   left: 0;
   z-index: -1; 
   pointer-events: none; /* Let clicks pass to layout if needed */
+  will-change: contents;
+  transform: translateZ(0); /* Force GPU acceleration */
 }
 
 /* General Layout & Overlay Container */
@@ -81,12 +83,13 @@ canvas {
 /* Glassmorphism System */
 .glass-nav, .glass-card, .glass-footer, .glass-btn {
   background: rgba(18, 20, 26, 0.45);
-  backdrop-filter: blur(12px); /* Swapped 16px for 12px for better performance on mobile */
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px); /* Reduced from 12px for better performance */
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
   will-change: transform, opacity;
   backface-visibility: hidden;
+  transform: translateZ(0); /* Force GPU acceleration */
 }
 
 /* Typography Utilities */
@@ -227,6 +230,103 @@ canvas {
 .about-card p:last-child { margin-bottom: 0; }
 
 /* Skills Grid */
+.github-stats-card {
+  padding: 35px;
+  border-radius: 24px;
+  margin-bottom: 50px;
+  border: 1px solid rgba(217, 70, 239, 0.2);
+}
+
+.stats-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+}
+
+.live-indicator {
+  font-size: 0.85rem;
+  color: #39ff14;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.github-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 25px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.github-stats-grid.loaded {
+  opacity: 1;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  background: rgba(217, 70, 239, 0.05);
+  border-color: rgba(217, 70, 239, 0.3);
+  transform: translateY(-3px);
+}
+
+.stat-item.languages {
+  grid-column: 1 / -1;
+}
+
+.stat-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #d946ef;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #a0a5b5;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.languages-list {
+  font-size: 1rem;
+  color: #d1d5e0;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.stat-skeleton {
+  height: 120px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 16px;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -328,6 +428,41 @@ canvas {
 }
 
 /* Projects Grid */
+.filter-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 10px 24px;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #d1d5e0;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.filter-btn:hover {
+  background: rgba(217, 70, 239, 0.1);
+  border-color: rgba(217, 70, 239, 0.4);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.filter-btn.active {
+  background: linear-gradient(90deg, #a855f7 0%, #d946ef 100%);
+  border-color: transparent;
+  color: #0b0c10;
+  font-weight: 600;
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -339,9 +474,13 @@ canvas {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease;
   transform-style: preserve-3d;
   will-change: transform;
+  opacity: 0;
+}
+.project-card.filter-visible {
+  opacity: 1;
 }
 .project-card:hover {
   transform: translateY(-5px) translateZ(20px);
@@ -467,6 +606,12 @@ canvas {
   .social-links { flex-wrap: wrap; justify-content: center; gap: 10px; }
   .social-links .btn { padding: 10px 15px; font-size: 0.85rem; flex: 1; min-width: 100px; text-align: center; }
   .modal-content { padding: 25px 20px; }
+  .filter-container { gap: 10px; }
+  .filter-btn { padding: 8px 18px; font-size: 0.85rem; }
+  .github-stats-card { padding: 25px 20px; }
+  .stats-title { flex-direction: column; gap: 10px; text-align: center; }
+  .github-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+  .stat-item.languages { grid-column: 1 / -1; }
 }
 
 /* Modal Overlay */

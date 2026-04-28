@@ -15,7 +15,7 @@ export class Effect {
     this.width = this.canvas.width;
     this.height = this.canvas.height;
     this.particles = [];
-    this.numberOfParticles = Math.floor((this.width * this.height) / 14000); // Optimized density
+    this.numberOfParticles = Math.floor((this.width * this.height) / 20000); // Reduced from 14000 to 20000
     this.mouse = {
       x: -1000,
       y: -1000,
@@ -75,12 +75,16 @@ export class Effect {
     this.canvas.height = height;
     this.width = width;
     this.height = height;
-    this.numberOfParticles = Math.floor((this.width * this.height) / 14000);
+    this.numberOfParticles = Math.floor((this.width * this.height) / 20000);
     this.init(); 
   }
 
   handleParticles(context: CanvasRenderingContext2D) {
-    this.connectParticles(context);
+    // Only connect particles every other frame for better performance
+    if (Math.random() > 0.5) {
+      this.connectParticles(context);
+    }
+    
     this.particles.forEach((particle) => {
       particle.draw(context);
       particle.update();
@@ -92,8 +96,11 @@ export class Effect {
     const maxDistanceSq = maxDistance * maxDistance;
     context.lineWidth = 1;
     
-    for (let a = 0; a < this.particles.length; a++) {
-      for (let b = a + 1; b < this.particles.length; b++) {
+    // Limit connections to reduce O(n²) impact
+    const maxConnections = Math.min(this.particles.length, 50);
+    
+    for (let a = 0; a < maxConnections; a++) {
+      for (let b = a + 1; b < maxConnections; b++) {
         const dx = this.particles[a].x - this.particles[b].x;
         const dy = this.particles[a].y - this.particles[b].y;
         const distSq = dx * dx + dy * dy;
