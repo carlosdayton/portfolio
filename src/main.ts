@@ -27,6 +27,51 @@ if (ctx) {
     effect.init();
   }
 
+  // --- Typing Animation ---
+  const typingTexts = [
+    'Web - Full Stack',
+    'Front-End',
+    'Back-End',
+    'React & TypeScript',
+    'de Soluções',
+  ];
+
+  const typingEl = document.getElementById('typing-text');
+  let textIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+
+  function typeEffect() {
+    if (!typingEl) return;
+
+    const currentText = typingTexts[textIndex];
+
+    if (isDeleting) {
+      typingEl.textContent = currentText.substring(0, charIndex - 1);
+      charIndex--;
+    } else {
+      typingEl.textContent = currentText.substring(0, charIndex + 1);
+      charIndex++;
+    }
+
+    let delay = isDeleting ? 60 : 100;
+
+    if (!isDeleting && charIndex === currentText.length) {
+      // Pause at end of word
+      delay = 1800;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      // Move to next word
+      isDeleting = false;
+      textIndex = (textIndex + 1) % typingTexts.length;
+      delay = 400;
+    }
+
+    setTimeout(typeEffect, delay);
+  }
+
+  typeEffect();
+
   // --- Scroll Progress Bar ---
   const scrollProgress = document.getElementById('scroll-progress');
   window.addEventListener('scroll', () => {
